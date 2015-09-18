@@ -29,7 +29,10 @@
   <div class="container" ng-controller="TodoListController">
     <section class="todo">
       <ul class="todo-controls">
-        <span>{{remaining()}} of {{todos.length}} remaining</span>
+		
+        <span>
+	<a ng-click="login()">{{iflogin()}}</a> 
+	{{remaining()}}/{{todos.length}}</span>
         <li class="right"><a ng-click="archive()" class="icon-delete">Delete</a></li>
       </ul>
 

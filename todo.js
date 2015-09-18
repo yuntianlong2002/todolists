@@ -1,12 +1,13 @@
 
 angular.module('todoApp', ["firebase"])
-  .controller('TodoListController', function TodoListController($scope, $firebaseArray) {
+  .controller('TodoListController', function TodoListController($scope, $rootScope, $firebaseArray) {
 
     var url = 'https://recurring2do.firebaseio.com';
 	  var fireRef = new Firebase(url);
 	  // Bind the todos to the firebase provider.
 	  $scope.todos = $firebaseArray(fireRef);
     $scope.newTodo = '';
+	var uid = -1;
 
     $scope.addTodo = function() {
       var newTodo = $scope.newTodo.trim();
@@ -19,7 +20,30 @@ angular.module('todoApp', ["firebase"])
            finishtime: 'Mon Jan 01 1900'
 		  });
 		  $scope.newTodo = '';
+		console.log($rootScope.display_name);
     };
+
+	$scope.login = function() {
+		fireRef.authWithOAuthPopup("facebook", function(error, authData) {
+		  if (error) {
+		    console.log("Login Failed!", error);
+		  } else {
+			console.log("new version!");
+		    console.log(authData.facebook.id);
+			console.log(authData.facebook.displayName);
+			uid = authData.facebook.id;
+			$rootScope.display_name = authData.facebook.displayName;
+		  }
+		}, {
+		  scope: "email" // the permissions requested
+		});
+	}
+	
+	$scope.iflogin = function() {
+		if(!$rootScope.display_name)
+			return "Login";
+		return $rootScope.display_name;
+	}
 
     $scope.remaining = function() {
       var count = 0;
