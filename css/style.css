@@ -242,6 +242,9 @@ body {
 .todo-controls .right {
   float: right;
 }
+.todo-controls .left {
+  float: left;
+}
 .todo-controls a {
   display: block;
   margin: 0;
